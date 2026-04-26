@@ -64,7 +64,7 @@ Email: ${userData.email}`;
       <Sidebar />
 
       <div className="flex-1 min-h-screen ml-64 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
-        <Header />
+        <Header title="My Income Tax Return"/>
 
         <div className="relative p-10">
 

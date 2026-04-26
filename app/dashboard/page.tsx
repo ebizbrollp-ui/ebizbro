@@ -76,7 +76,7 @@ export default function Dashboard() {
       <div className="flex-1 min-h-screen ml-64 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
 
         {/* HEADER */}
-        <Header />
+        <Header title="Dashboard"/>
 
         {/* PAGE CONTENT */}
         <div className="p-10 pr-24">
