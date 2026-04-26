@@ -87,7 +87,7 @@ export default function Dashboard() {
             {/* LEFT */}
             <div className="col-span-2 grid grid-cols-2 gap-6">
               {services.map((service, index) => (
-                <ServiceCard key={index} {...service} />
+                <ServiceCard {...service} />
               ))}
             </div>
 
