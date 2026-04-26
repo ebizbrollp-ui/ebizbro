@@ -128,7 +128,7 @@ export default function DocumentsPage() {
       <Sidebar />
 
       <div className="flex-1 min-h-screen ml-64 bg-gradient-to-br from-blue-100 via-purple-100 to-pink-100">
-        <Header />
+        <Header title="My Documents & Details"/>
 
         <div className="p-10 pr-24 grid grid-cols-3 gap-6">
           {/* LEFT */}
