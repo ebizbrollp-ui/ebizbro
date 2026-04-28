@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import {
   Home,
   FileText,
@@ -12,9 +12,12 @@ import {
   Settings,
   LogOut
 } from "lucide-react";
+import { signOut } from "firebase/auth";
+import { auth } from "../lib/firebase";
 
 export default function Sidebar() {
   const pathname = usePathname();
+  const router = useRouter();
 
   const menu = [
     { name: "Home", path: "/dashboard", icon: Home },
@@ -27,16 +30,16 @@ export default function Sidebar() {
   ];
 
   return (
-    <div className="w-64 h-screen fixed top-0 left-0 bg-[#f4f6fb] border-r flex flex-col px-4 pt-2 pb-4">
+    <div className="w-64 h-screen fixed top-0 left-0 bg-[#f4f6fb] border-r flex flex-col px-4 pt-3 pb-4">
 
-      {/* 🔷 Logo */}
-      <div className="flex justify-left pt-2 pb-4">
+      {/* 🔷 Logo (CENTERED + BIGGER) */}
+      <div className="flex justify-center items-center pb-6">
         <Image
           src="/logo.png"
           alt="logo"
-          width={180}
-          height={40}
-          className="h-10 w-auto object-contain"
+          width={200}
+          height={50}
+          className="h-12 w-auto object-contain"
         />
       </div>
 
@@ -84,7 +87,13 @@ export default function Sidebar() {
       {/* 🔻 Logout */}
       <div className="mt-auto pt-6 border-t">
 
-        <div className="flex items-center gap-3 px-4 py-3 text-gray-500 cursor-pointer transition hover:text-red-500 hover:translate-x-1">
+        <div
+          onClick={async () => {
+            await signOut(auth);
+            router.push("/login");
+          }}
+          className="flex items-center gap-3 px-4 py-3 text-gray-500 cursor-pointer transition hover:text-red-500 hover:translate-x-1"
+        >
           <LogOut size={20} />
           <span className="text-sm font-medium">Logout</span>
         </div>

@@ -42,7 +42,7 @@ export default function NoticesPage() {
 
       <Sidebar />
 
-      <div className="flex-1 ml-[260px]">
+      <div className="flex-1 ml-64">
         <Header title="My Notices & Replies" />
 
         <div className="relative p-6 space-y-6">

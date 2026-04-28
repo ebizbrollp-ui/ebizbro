@@ -59,6 +59,34 @@ Email: ${userData.email}`;
     alert("✅ Request sent. File will be delivered within 24 hours.");
   };
 
+  // ✅ NEW: 24-hour logic per document
+  const handleDocRequest = (docName: string, docKey: string) => {
+    const KEY = `req_doc_${docKey}_${userData.id}`;
+    const lastRequest = localStorage.getItem(KEY);
+
+    if (lastRequest) {
+      const diff = Date.now() - Number(lastRequest);
+
+      if (diff < 24 * 60 * 60 * 1000) {
+        alert(`⏳ You already requested ${docName}. Try again after 24 hours.`);
+        return;
+      }
+    }
+
+    const message = `Hi, I want to request ${docName} document.
+
+Name: ${userData.name}
+Email: ${userData.email}`;
+
+    const url = `https://wa.me/${PHONE}?text=${encodeURIComponent(message)}`;
+
+    window.open(url, "_blank");
+
+    localStorage.setItem(KEY, Date.now().toString());
+
+    alert(`✅ ${docName} request sent. File will be delivered within 24 hours.`);
+  };
+
   return (
     <div className="flex">
       <Sidebar />
@@ -68,7 +96,6 @@ Email: ${userData.email}`;
 
         <div className="relative p-10">
 
-          {/* 🔒 LOCK */}
           {!isITRPurchased && (
             <div className="absolute inset-0 z-50 flex items-center justify-center bg-white/70 backdrop-blur-md rounded-xl">
               <div className="text-center space-y-4">
@@ -95,7 +122,6 @@ Email: ${userData.email}`;
               My Income Tax Return
             </h1>
 
-            {/* ================= STATUS CARD ================= */}
             <div className="bg-white rounded-2xl p-6 shadow mb-6 flex justify-between items-center">
               <div>
                 <h2 className="font-semibold text-lg">ITR Filing Status</h2>
@@ -116,7 +142,6 @@ Email: ${userData.email}`;
               </button>
             </div>
 
-            {/* ================= TAX CARDS ================= */}
             <div className="grid grid-cols-2 gap-6 mb-6">
               <div className="bg-white rounded-2xl p-6 shadow">
                 <p className="text-gray-500">TDS (From 26AS)</p>
@@ -133,7 +158,6 @@ Email: ${userData.email}`;
               </div>
             </div>
 
-            {/* ================= UPLOAD DOCUMENTS ================= */}
             <div className="bg-white rounded-2xl p-6 shadow mb-6">
               <h2 className="font-semibold mb-4">
                 Upload Your Documents
@@ -170,7 +194,7 @@ Email: ${userData.email}`;
               </div>
             </div>
 
-            {/* ================= EBIZBRO DOCS ================= */}
+            {/* ✅ FIXED SECTION */}
             <div className="bg-white rounded-2xl p-6 shadow">
               <h2 className="font-semibold mb-4">
                 Documents from Ebizbro
@@ -200,9 +224,12 @@ Email: ${userData.email}`;
                           View
                         </a>
                       ) : (
-                        <span className="text-orange-500 text-sm">
+                        <button
+                          onClick={() => handleDocRequest(doc.name, doc.key)}
+                          className="text-orange-500 text-sm"
+                        >
                           Request
-                        </span>
+                        </button>
                       )}
                     </div>
                   );

@@ -7,6 +7,7 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   sendPasswordResetEmail,
+  sendEmailVerification, // ✅ ADDED
 } from "firebase/auth";
 import { auth } from "@/app/lib/firebase";
 import { createUserIfNotExists } from "@/app/lib/createUserIfNotExists";
@@ -17,12 +18,14 @@ export default function LoginPage() {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showResend, setShowResend] = useState(false); // ✅ ADDED
 
   const handleLogin = async () => {
     try {
       const userCred = await signInWithEmailAndPassword(auth, email, password);
 
       if (!userCred.user.emailVerified) {
+        setShowResend(true); // ✅ TRIGGER BUTTON
         alert("Please verify your email before logging in.");
         return;
       }
@@ -59,6 +62,24 @@ export default function LoginPage() {
     try {
       await sendPasswordResetEmail(auth, email);
       alert("Password reset email sent.");
+    } catch (error: any) {
+      alert(error.message);
+    }
+  };
+
+  // ✅ RESEND VERIFICATION FUNCTION
+  const handleResendVerification = async () => {
+    try {
+      const userCred = await signInWithEmailAndPassword(auth, email, password);
+
+      if (userCred.user.emailVerified) {
+        alert("Email already verified. Please login.");
+        setShowResend(false);
+        return;
+      }
+
+      await sendEmailVerification(userCred.user);
+      alert("📩 Verification email sent again.");
     } catch (error: any) {
       alert(error.message);
     }
@@ -108,6 +129,16 @@ export default function LoginPage() {
         >
           Sign In
         </button>
+
+        {/* ✅ RESEND BUTTON (CONDITIONAL) */}
+        {showResend && (
+          <button
+            onClick={handleResendVerification}
+            className="w-full mt-3 text-sm text-blue-600 hover:underline"
+          >
+            Resend Verification Email
+          </button>
+        )}
 
         <div className="flex items-center my-5">
           <div className="flex-1 border-t"></div>

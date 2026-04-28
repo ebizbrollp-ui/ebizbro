@@ -69,7 +69,7 @@ Email: ${userData.email}`;
       
       <Sidebar />
 
-      <div className="flex-1 ml-[260px]">
+      <div className="flex-1 ml-64">
         <Header title="Virtual CFO Dashboard" />
 
         <div className="relative p-6 space-y-6">
@@ -113,7 +113,7 @@ Email: ${userData.email}`;
                 </h2>
 
                 <p className="text-4xl font-bold mt-2">
-                  {cfo.score ?? "--"}
+                  {cfo?.score ?? userData?.vcfo?.score ?? "--"}
                 </p>
 
                 <p className="text-sm opacity-80 mt-1">

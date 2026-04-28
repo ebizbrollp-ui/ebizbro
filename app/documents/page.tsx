@@ -6,6 +6,7 @@ import Header from "../components/Header";
 import { useUserData } from "../context/UserDataContext";
 import { FaEye, FaEyeSlash, FaTrash, FaUpload } from "react-icons/fa";
 import { hasAccess, getDoc } from "../utils/appLogic";
+import { auth } from "@/app/lib/firebase";
 
 import { db } from "../lib/firebase";
 import { doc, updateDoc } from "firebase/firestore";
@@ -137,7 +138,12 @@ export default function DocumentsPage() {
             {/* PERSONAL */}
             <div className="bg-white p-5 rounded-xl shadow">
               <h3 className="font-semibold mb-2">Personal Details</h3>
-              <p>Name: {userData.name}</p>
+              <p>Name: {
+                  userData?.name && userData.name !== "User"
+                    ? userData.name
+                    : auth.currentUser?.displayName || "User"
+                }
+              </p>
               <p>PAN: {userData.pan || "Not Provided"}</p>
             </div>
 
@@ -212,7 +218,7 @@ export default function DocumentsPage() {
               </div>
             </div>
           </div>
-
+              
           {/* RIGHT PANEL (UNCHANGED) */}
           <div className="space-y-6">
 
